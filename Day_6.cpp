@@ -8,27 +8,20 @@ using namespace std;
 class Solution {
     public:
     ll findShortest(vector<ll>& cities, vector<ll>& towers, int n, int m) {
-        vector<ll>::iterator city = cities.begin();
-        vector<ll>::iterator tower = towers.begin();
+        ll radius = 0;
         ll result = 0;
-        ll lowerDistance = LONG_LONG_MAX;
-        ll distance;
-        while(city < cities.end()) {
-            while(*tower<=*city &&tower+1 != towers.end()) {
-                distance = abs(*city - *tower);
-                if(distance<lowerDistance) {
-                    lowerDistance = distance;
-                }
-                if(tower+1!=towers.end())
-                    tower++;
+        ll distanceR=LONG_LONG_MAX;
+        ll distanceL=LONG_LONG_MIN;
+        ll tower = 0;
+        for(ll city=0; city<n; city++) {
+            while(towers[tower]<cities[city] && tower<m-1) {
+                tower++;
             }
-            distance = abs(*city - *tower);
-            if(distance<lowerDistance)
-                lowerDistance = distance;
-            if(result<lowerDistance)
-                result = lowerDistance;
-            city++;
-            lowerDistance = LONG_LONG_MAX;
+            distanceR = abs(towers[tower]-cities[city]);
+            if(tower>0)
+                distanceL = abs(towers[tower-1] - cities[city]);
+            radius = (distanceL<0)?distanceR:(distanceR<distanceL)?distanceR:distanceL;
+            result = (result<radius)?radius:result;
         }
         return result;
     }
@@ -37,8 +30,8 @@ class Solution {
 int main() {
     int n,m;
     cin>>n>>m;
-    vector<ll> cities(m);
-    vector<ll> towers(n);
+    vector<ll> cities(n);
+    vector<ll> towers(m);
     for(int i=0; i<n; i++) {
         cin>>cities[i];
     }
