@@ -6,7 +6,9 @@ using namespace std;
 class Solution {
     public:
     int solve(vector<int> xCost, vector<int> yCost, int m, int n) {
+        //Sum
         int sum=0;
+        //Edge/Base cases where only a single row or column exists
         while(m==1 && n>1) {
             sum += yCost[(n--)-2];
             if(n==1)
@@ -17,8 +19,12 @@ class Solution {
             if(m==1)
                 return sum;
         }
+        //Iterators for max elements in both vectors
         auto xMax = max_element(xCost.begin(), xCost.end());
         auto yMax = max_element(yCost.begin(), yCost.end());
+
+        //Comparing the values and cutting the chocolate along the costlier line and breakin the process into sub parts
+        //recursively
         if(*xMax<*yMax) {
             vector<int> yCostL(yCost.begin(),yMax);
             vector<int> yCostR(yMax+1, yCost.end());
